@@ -2,7 +2,12 @@
 var CANVAS_HEIGHT = 707;
 var CANVAS_WIDTH = 505;
 var Y_STONE_VALUES = [43,126, 209, 292]; // (707 - (83 * 8)) = 43 which is then incremented by 83 each time
-var X_VALUES = [0, 100, 200, 300, 400];
+var CHAR_WIDTH = 171;
+var CHAR_HEIGHT = 101;
+
+//Key press booleans
+
+var upPressed = false; var downPressed = false; var rightPressed = false; var leftPressed = false; 
 
 // Enemies our player must avoid
 var Enemy = function(x,y, speed) {
@@ -51,13 +56,37 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
 };
 
-Player.prototype.update = function() {};
+Player.prototype.update = function() {
+    if (rightPressed && this.x < CANVAS_WIDTH - CHAR_WIDTH) {
+        this.x += 101;
+        rightPressed = false;
+    } else if (leftPressed && this.x > 0) {
+        this.x -= 101;
+        leftPressed = false;
+    } else if (downPressed && this.y < CANVAS_HEIGHT + CHAR_HEIGHT) {
+        this.y += 83;
+        downPressed = false;
+    } else if (upPressed && this.y >= 0) {
+        this.y -= 83;
+        upPressed = false;
+    }
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function() {};
+Player.prototype.handleInput = function(key) {
+    if (key === 'left') {
+        leftPressed = true;
+    } else if (key === 'up') {
+        upPressed = true;
+    } else if (key === 'right') {
+        rightPressed = true;
+    } else if (key === 'down') {
+        downPressed = true;
+        }
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
