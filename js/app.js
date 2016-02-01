@@ -5,6 +5,11 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// Constants
+CANVAS_HEIGHT = 707;
+CANVAS_WIDTH = 505;
+Y_STONE_VALUES = [50.5, 151.5, 252.5, 353.5 ]; // (707 / 7) / 2 = 50.5 for half-row
+X_VALUES = [];
 
 // Enemies our player must avoid
 var Enemy = function(x,y) {
@@ -16,7 +21,7 @@ var Enemy = function(x,y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.speedmultiplier = getRandomInt(2,10);
+    this.speedmultiplier = getRandomInt(30,50);
 };
 
 // Update the enemy's position, required method for game
@@ -49,8 +54,8 @@ Player.prototype.handleInput = function() {};
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
-for (var i = 0; i < 2; i++) {
-    allEnemies.push(new Enemy(0,101));
+for (var i = 0; i < 5; i++) {
+    allEnemies.push(new Enemy(0, Y_STONE_VALUES[i]));
 }
 
 var player = new Player();
