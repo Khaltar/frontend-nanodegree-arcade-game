@@ -1,4 +1,17 @@
 body {
     text-align: center;
-    overflow: hidden; 
+    overflow: hidden;
+    background: #00000a
+}
+
+.scoreboard  {
+    font-size: 40px;
+    color: #da0b0b;
+    text-align: center;
+    font-weight: bold;
+}
+
+.score {
+    font-size: 40px;
+    color: #da0b0b;
 }

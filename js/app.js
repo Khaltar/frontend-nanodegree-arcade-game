@@ -7,6 +7,8 @@ var CHAR_HEIGHT = 101;
 var BUG_WIDTH = 171;
 var BUG_HEIGHT = 101;
 
+
+
 //Key press booleans
 
 var upPressed = false; var downPressed = false; var rightPressed = false; var leftPressed = false; 
@@ -108,6 +110,8 @@ Player.prototype.handleInput = function(key) {
 //Player reset method to remove half of the score and reset position when collisions happen
 Player.prototype.reset = function() {
     this.score /= 2;
+    //jQuery to add the score variable to the scoreboard
+    $(".score").replaceWith(this.score);
     this.x = this.x_start;
     this.y = this.y_start;
 };
@@ -115,9 +119,10 @@ Player.prototype.reset = function() {
 // Player reset method for wins when it touches the water at the other side of the field
 Player.prototype.win = function() {
     this.score += 100;
+    $(".score").replaceWith(this.score);
     this.x = this.x_start;
     this.y = this.y_start;
-}
+};
 
 
 // Now instantiate your objects.
@@ -145,3 +150,4 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
