@@ -4,6 +4,8 @@ var CANVAS_WIDTH = 505;
 var Y_STONE_VALUES = [43,126, 209, 292]; // (707 - (83 * 8)) = 43 which is then incremented by 83 each time
 var CHAR_WIDTH = 171;
 var CHAR_HEIGHT = 101;
+var BUG_WIDTH = 171;
+var BUG_HEIGHT = 101;
 
 //Key press booleans
 
@@ -24,7 +26,7 @@ var Enemy = function(x,y, speed) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function(dt, player) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -33,11 +35,23 @@ Enemy.prototype.update = function(dt) {
         this.x = -115;
         this.randomSpeed();
     }
+    this.checkCollision(player);
 };
 
 // Enemy Random Speed Generator method
 Enemy.prototype.randomSpeed = function() {
     this.speed = 90 + Math.floor(Math.random() * 200); 
+};
+
+/* Enemy Check Collision Method - Algorithm is the Axis-Aligned Bounding Box from MDN and the post from Udayan here at https://discussions.udacity.com/t/trying-to-identify-collisions-but-how-do-i-compare-enemy-x-with-player-x/29930/8 */
+
+Enemy.prototype.checkCollision = function(player) {
+    if (this.x < player.x + 75 &&
+       this.x + 65 > player.x &&
+       this.y < player.y + 50 &&
+       this.y + 70 > player.y) {
+        player.reset();
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -54,6 +68,7 @@ var Player = function() {
     this.x = this.x_start;
     this.y = this.y_start;
     this.sprite = 'images/char-boy.png';
+    this.score = 0;
 };
 
 Player.prototype.update = function() {
@@ -63,10 +78,10 @@ Player.prototype.update = function() {
     } else if (leftPressed && this.x > 0) {
         this.x -= 101;
         leftPressed = false;
-    } else if (downPressed && this.y < CANVAS_HEIGHT + CHAR_HEIGHT) {
+    } else if (downPressed && this.y < 458) {
         this.y += 83;
         downPressed = false;
-    } else if (upPressed && this.y >= 0) {
+    } else if (upPressed && this.y > 0) {
         this.y -= 83;
         upPressed = false;
     }
@@ -88,9 +103,20 @@ Player.prototype.handleInput = function(key) {
         }
 };
 
+//Player reset method to remove half of the score and reset position when collisions happen
+Player.prototype.reset = function() {
+    this.score /= 2;
+    this.x = this.x_start;
+    this.y = this.y_start;
+};
+
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+
+
 var allEnemies = [];
 for (var i = 0; i < 4; i++) {
     var initialSpeed = Math.floor(Math.random()*100) + 60;
