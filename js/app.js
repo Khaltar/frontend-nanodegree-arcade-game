@@ -84,6 +84,8 @@ Player.prototype.update = function() {
     } else if (upPressed && this.y > 0) {
         this.y -= 83;
         upPressed = false;
+    } else if (this.y < 43) {
+        player.win();
     }
 };
 
@@ -110,6 +112,12 @@ Player.prototype.reset = function() {
     this.y = this.y_start;
 };
 
+// Player reset method for wins when it touches the water at the other side of the field
+Player.prototype.win = function() {
+    this.score += 100;
+    this.x = this.x_start;
+    this.y = this.y_start;
+}
 
 
 // Now instantiate your objects.
