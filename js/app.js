@@ -1,10 +1,3 @@
-// Function to create random ints. Thanks to MDN for the code
-// Returns a random integer between min (included) and max (excluded)
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
 // Constants
 var CANVAS_HEIGHT = 707;
 var CANVAS_WIDTH = 505;
@@ -39,7 +32,7 @@ Enemy.prototype.update = function(dt) {
 
 // Enemy Random Speed Generator method
 Enemy.prototype.randomSpeed = function() {
-    this.speed = 50 * Math.floor(Math.random() * 20); 
+    this.speed = 90 + Math.floor(Math.random() * 200); 
 };
 
 // Draw the enemy on the screen, required method for game
@@ -51,8 +44,8 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-    this.x_start = 300;
-    this.y_start = 6;
+    this.x_start = 202;
+    this.y_start = 458;
     this.x = this.x_start;
     this.y = this.y_start;
     this.sprite = 'images/char-boy.png';
