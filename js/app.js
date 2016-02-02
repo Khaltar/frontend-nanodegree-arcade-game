@@ -8,6 +8,18 @@ var BUG_WIDTH = 171;
 var BUG_HEIGHT = 101;
 
 
+// Function to choose gender at the beginning of the game
+var boy;
+var genderChoice = function() {
+    var gender = prompt("Are you a boy or a girl?");
+    if (gender.toLowerCase() === "boy") {
+        boy = true;
+    } else {
+        boy = false;
+    }
+}
+
+genderChoice();
 
 //Key press booleans
 
@@ -69,9 +81,14 @@ var Player = function() {
     this.y_start = 458;
     this.x = this.x_start;
     this.y = this.y_start;
-    this.sprite = 'images/char-boy.png';
     this.score = 0;
+    if (boy === true) {
+        this.sprite = 'images/char-boy.png';
+    } else {
+        this.sprite = 'images/char-horn-girl.png';
+    }
 };
+
 
 Player.prototype.update = function() {
     if (rightPressed && this.x < CANVAS_WIDTH - CHAR_WIDTH) {
