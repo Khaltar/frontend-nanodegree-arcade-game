@@ -1,32 +1,31 @@
 // Constants
-var CANVAS_HEIGHT = 707;
 var CANVAS_WIDTH = 505;
-var Y_STONE_VALUES = [43,126, 209, 292]; // (707 - (83 * 8)) = 43 which is then incremented by 83 each time
+var Y_STONE_VALUES = [43, 126, 209, 292]; // (707 - (83 * 8)) = 43 which is then incremented by 83 each time
 var CHAR_WIDTH = 171;
-var CHAR_HEIGHT = 101;
-var BUG_WIDTH = 171;
-var BUG_HEIGHT = 101;
 
 
 // Function to choose gender at the beginning of the game
 var boy;
-var genderChoice = function() {
+var genderChoice = function () {
     var gender = prompt("Are you a boy or a girl?");
     if (gender.toLowerCase() === "boy") {
         boy = true;
     } else {
         boy = false;
     }
-}
+};
 
 genderChoice();
 
 //Key press booleans
 
-var upPressed = false; var downPressed = false; var rightPressed = false; var leftPressed = false; 
+var upPressed = false;
+var downPressed = false;
+var rightPressed = false;
+var leftPressed = false;
 
 // Enemies our player must avoid
-var Enemy = function(x,y, speed) {
+var Enemy = function (x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -40,7 +39,7 @@ var Enemy = function(x,y, speed) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt, player) {
+Enemy.prototype.update = function (dt, player) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -53,30 +52,30 @@ Enemy.prototype.update = function(dt, player) {
 };
 
 // Enemy Random Speed Generator method
-Enemy.prototype.randomSpeed = function() {
-    this.speed = 90 + Math.floor(Math.random() * 200); 
+Enemy.prototype.randomSpeed = function () {
+    this.speed = 90 + Math.floor(Math.random() * 200);
 };
 
 /* Enemy Check Collision Method - Algorithm is the Axis-Aligned Bounding Box from MDN and the post from Udayan here at https://discussions.udacity.com/t/trying-to-identify-collisions-but-how-do-i-compare-enemy-x-with-player-x/29930/8 */
 
-Enemy.prototype.checkCollision = function(player) {
+Enemy.prototype.checkCollision = function (player) {
     if (this.x < player.x + 75 &&
-       this.x + 65 > player.x &&
-       this.y < player.y + 50 &&
-       this.y + 70 > player.y) {
+        this.x + 65 > player.x &&
+        this.y < player.y + 50 &&
+        this.y + 70 > player.y) {
         player.reset();
     }
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
+Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function() {
+var Player = function () {
     this.x_start = 202;
     this.y_start = 458;
     this.x = this.x_start;
@@ -90,7 +89,7 @@ var Player = function() {
 };
 
 
-Player.prototype.update = function() {
+Player.prototype.update = function () {
     if (rightPressed && this.x < CANVAS_WIDTH - CHAR_WIDTH) {
         this.x += 101;
         rightPressed = false;
@@ -108,11 +107,11 @@ Player.prototype.update = function() {
     }
 };
 
-Player.prototype.render = function() {
+Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(key) {
+Player.prototype.handleInput = function (key) {
     if (key === 'left') {
         leftPressed = true;
     } else if (key === 'up') {
@@ -121,11 +120,11 @@ Player.prototype.handleInput = function(key) {
         rightPressed = true;
     } else if (key === 'down') {
         downPressed = true;
-        }
+    }
 };
 
 //Player reset method to remove half of the score and reset position when collisions happen
-Player.prototype.reset = function() {
+Player.prototype.reset = function () {
     this.score /= 2;
     //jQuery to add the score variable to the scoreboard
     $(".score").replaceWith(this.score);
@@ -134,7 +133,7 @@ Player.prototype.reset = function() {
 };
 
 // Player reset method for wins when it touches the water at the other side of the field
-Player.prototype.win = function() {
+Player.prototype.win = function () {
     this.score += 100;
     $(".score").replaceWith(this.score);
     this.x = this.x_start;
@@ -149,7 +148,7 @@ Player.prototype.win = function() {
 
 var allEnemies = [];
 for (var i = 0; i < 4; i++) {
-    var initialSpeed = Math.floor(Math.random()*100) + 60;
+    var initialSpeed = Math.floor(Math.random() * 100) + 60;
     allEnemies.push(new Enemy(-115, Y_STONE_VALUES[i], initialSpeed));
 }
 
@@ -157,7 +156,7 @@ var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -167,4 +166,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
