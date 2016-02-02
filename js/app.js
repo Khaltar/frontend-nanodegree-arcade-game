@@ -16,8 +16,8 @@ var game = new Game();
 
 // Game method for gender selection at the start of the game
 Game.prototype.genderSelection = function () {
-    var gender = prompt("Are you a boy or a girl?");
-    if (gender.toLowerCase() === "boy") {
+    var gender = prompt('Are you a boy or a girl?');
+    if (gender.toLowerCase() === 'boy') {
         this.gender = true;
     } else {
         this.gender = false;
@@ -47,12 +47,12 @@ Game.prototype.livesDecrease = function () {
 // Methods to update the scoreboard and the lives in html
 Game.prototype.updateScore = function () {
     //jQuery to change the score variable in the scoreboard
-    $(".score").html(game.score);
+    $('.score').html(game.score);
 };
 
 Game.prototype.updateLives = function () {
     //jQuery to change the lives variable in the scoreboard
-    $(".lives").html(game.lives);
+    $('.lives').html(game.lives);
 };
 
 // Method for resetting the game when the player loses all lives
@@ -152,7 +152,7 @@ Player.prototype.update = function () {
         this.y -= 83;
         upPressed = false;
     } else if (this.y < 43) {
-        player.win();
+        this.win();
     }
 };
 
