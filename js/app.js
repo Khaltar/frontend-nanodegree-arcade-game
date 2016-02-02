@@ -1,17 +1,17 @@
-// Constants
+// Constants for use in game
 var CANVAS_WIDTH = 505;
 var Y_STONE_VALUES = [43, 126, 209, 292]; // (707 - (83 * 8)) = 43 which is then incremented by 83 each time
 var CHAR_WIDTH = 171;
 
 
-
 //Game object for counting lives and scores and defining gender
-var Game = function() {
+var Game = function () {
     this.lives = 3;
     this.score = 0;
     this.gender = undefined;
 };
 
+// Starting the game variable
 var game = new Game();
 
 // Game method for gender selection at the start of the game
@@ -21,39 +21,52 @@ Game.prototype.genderSelection = function () {
         this.gender = true;
     } else {
         this.gender = false;
-    }  
+    }
 };
 
 game.genderSelection();
 
-Game.prototype.scoreIncrease = function() {
+// Method for increasing the score everytime the player gets to the other side of the field
+Game.prototype.scoreIncrease = function () {
     this.score += 100;
     game.updateScore();
 };
 
-Game.prototype.scoreDecrease = function() {
-    this.score /= 2;
+// Method for decreasing the score everytime the player hits an enemy
+Game.prototype.scoreDecrease = function () {
+    this.score = Math.round(this.score / 2);
     game.updateScore();
 };
 
-Game.prototype.livesDecrease = function() {
+// Method for decreasing one live everytime the player hits an enemy
+Game.prototype.livesDecrease = function () {
     this.lives -= 1;
     game.updateLives();
 };
 
-Game.prototype.updateScore = function() {
+// Methods to update the scoreboard and the lives in html
+Game.prototype.updateScore = function () {
     //jQuery to change the score variable in the scoreboard
-    $(".score").replaceWith(game.score);
+    $(".score").html(game.score);
 };
 
-Game.prototype.updateLives = function() {
+Game.prototype.updateLives = function () {
     //jQuery to change the lives variable in the scoreboard
-    $(".lives").replaceWith(game.lives);
+    $(".lives").html(game.lives);
+};
+
+// Method for resetting the game when the player loses all lives
+Game.prototype.resetGame = function () {
+    this.lives = 3;
+    this.score = 0;
+    this.updateLives();
+    this.updateScore();
+    player.x = player.x_start;
+    player.y = player.y_start;
 };
 
 
-//Key press booleans
-
+//Key press booleans for keyboard control
 var upPressed = false;
 var downPressed = false;
 var rightPressed = false;
@@ -124,7 +137,7 @@ var Player = function () {
     }
 };
 
-
+// Method for updating the player position when he moves. Also configured to not allow out of boundaries movement.
 Player.prototype.update = function () {
     if (rightPressed && this.x < CANVAS_WIDTH - CHAR_WIDTH) {
         this.x += 101;
@@ -143,10 +156,12 @@ Player.prototype.update = function () {
     }
 };
 
+// Method for rendering the player sprite
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Method for controlling the player with the keyboard
 Player.prototype.handleInput = function (key) {
     if (key === 'left') {
         leftPressed = true;
@@ -163,11 +178,16 @@ Player.prototype.handleInput = function (key) {
 Player.prototype.reset = function () {
     game.scoreDecrease();
     game.livesDecrease();
-    this.x = this.x_start;
-    this.y = this.y_start;
+    if (game.lives > 0) {
+        this.x = this.x_start;
+        this.y = this.y_start;
+    } else {
+        alert('Game Over, you were devoured by the bugs!');
+        game.resetGame();
+    }
 };
 
-// Player reset method for wins when it touches the water at the other side of the field
+// Player reset method for resetting the player position in wins when he touches the water at the other side of the field
 Player.prototype.win = function () {
     game.scoreIncrease();
     this.x = this.x_start;
@@ -179,13 +199,14 @@ Player.prototype.win = function () {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-
+// Instantiating enemies
 var allEnemies = [];
 for (var i = 0; i < 4; i++) {
     var initialSpeed = Math.floor(Math.random() * 100) + 60;
     allEnemies.push(new Enemy(-115, Y_STONE_VALUES[i], initialSpeed));
 }
 
+// Instantiating the player
 var player = new Player();
 
 // This listens for key presses and sends the keys to your

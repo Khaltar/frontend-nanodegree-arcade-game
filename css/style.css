@@ -1,17 +1,30 @@
 body {
     text-align: center;
     overflow: hidden;
-    background: #00000a
+    background: #00000a;
+    font-family: Helvetica, sans-serif;
 }
 
-.scoreboard, .livescounter {
+.scoreboard,
+.livescounter {
     font-size: 20px;
     color: #da0b0b;
-    text-align: center;
     font-weight: bold;
+    display: inline-block;
+    width: 25%
 }
 
-.score, .lives {
+.score,
+.lives {
     font-size: 20px;
     color: #da0b0b;
+}
+
+.rules {
+    float: right;
+    display: inline-block;
+    font-size: 20px;
+    color: white;
+    width: 25%;
+    text-align: left;
 }
