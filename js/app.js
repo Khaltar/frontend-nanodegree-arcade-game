@@ -4,18 +4,53 @@ var Y_STONE_VALUES = [43, 126, 209, 292]; // (707 - (83 * 8)) = 43 which is then
 var CHAR_WIDTH = 171;
 
 
-// Function to choose gender at the beginning of the game
-var boy;
-var genderChoice = function () {
-    var gender = prompt("Are you a boy or a girl?");
-    if (gender.toLowerCase() === "boy") {
-        boy = true;
-    } else {
-        boy = false;
-    }
+
+//Game object for counting lives and scores and defining gender
+var Game = function() {
+    this.lives = 3;
+    this.score = 0;
+    this.gender = undefined;
 };
 
-genderChoice();
+var game = new Game();
+
+// Game method for gender selection at the start of the game
+Game.prototype.genderSelection = function () {
+    var gender = prompt("Are you a boy or a girl?");
+    if (gender.toLowerCase() === "boy") {
+        this.gender = true;
+    } else {
+        this.gender = false;
+    }  
+};
+
+game.genderSelection();
+
+Game.prototype.scoreIncrease = function() {
+    this.score += 100;
+    game.updateScore();
+};
+
+Game.prototype.scoreDecrease = function() {
+    this.score /= 2;
+    game.updateScore();
+};
+
+Game.prototype.livesDecrease = function() {
+    this.lives -= 1;
+    game.updateLives();
+};
+
+Game.prototype.updateScore = function() {
+    //jQuery to change the score variable in the scoreboard
+    $(".score").replaceWith(game.score);
+};
+
+Game.prototype.updateLives = function() {
+    //jQuery to change the lives variable in the scoreboard
+    $(".lives").replaceWith(game.lives);
+};
+
 
 //Key press booleans
 
@@ -81,7 +116,8 @@ var Player = function () {
     this.x = this.x_start;
     this.y = this.y_start;
     this.score = 0;
-    if (boy === true) {
+    this.lives = 3;
+    if (game.gender === true) {
         this.sprite = 'images/char-boy.png';
     } else {
         this.sprite = 'images/char-horn-girl.png';
@@ -125,17 +161,15 @@ Player.prototype.handleInput = function (key) {
 
 //Player reset method to remove half of the score and reset position when collisions happen
 Player.prototype.reset = function () {
-    this.score /= 2;
-    //jQuery to add the score variable to the scoreboard
-    $(".score").replaceWith(this.score);
+    game.scoreDecrease();
+    game.livesDecrease();
     this.x = this.x_start;
     this.y = this.y_start;
 };
 
 // Player reset method for wins when it touches the water at the other side of the field
 Player.prototype.win = function () {
-    this.score += 100;
-    $(".score").replaceWith(this.score);
+    game.scoreIncrease();
     this.x = this.x_start;
     this.y = this.y_start;
 };
