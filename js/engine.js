@@ -134,6 +134,9 @@ var Engine = (function (global) {
                  * we're using them over and over.
                  */
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                if (row === 0) {
+                    ctx.clearRect(col * 101, row * 83, 101, 50);
+                }
             }
         }
 
