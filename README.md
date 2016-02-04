@@ -20,10 +20,6 @@ Just use the directional keys to move your character. To choose the gender of yo
 * When all lives are gone, the game restarts.
 * There is not much extra functionality or a way to win the game: just try to get a high score until you are bored.
 
-## Known bugs
-* Nothing game-breaking
-* There's a known bug that shows when the character gets to the water. Canvas renders a portion of their head forever (will be solved ASAP)
-
 ## Contributions
 Anyone who wants to help adding some functionality to the game or correcting some bugs is welcome. Just fork the repo and send a pull request.
 
